@@ -365,7 +365,7 @@ class MudiExperiencePDP {
         const link = document.createElement("LINK");
         link.setAttribute("rel", "stylesheet");
         link.id = "stylesMudiGeneral";
-        link.href = `http://127.0.0.1:4455/index.css`; /* custom this path */
+        link.href = `https://cdn.jsdelivr.net/gh/mudi-3D/tienda-celsia@latest/index.js`; /* custom this path */
 
         document.head.appendChild(link);
     };
