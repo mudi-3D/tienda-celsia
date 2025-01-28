@@ -394,14 +394,3 @@ class MudiExperiencePDP {
 
 const mudiExperience = new MudiExperiencePDP();
 window.mudiExperience = mudiExperience;
-
-mudiExperience.experienceOn(
-    //document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML,
-    'ZA6W0124CO',
-    {
-        desk: document.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
-        tablet: document.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
-        mobile: document.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
-    }
-
-);
