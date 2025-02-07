@@ -370,23 +370,33 @@ class MudiExperiencePDP {
         document.head.appendChild(link);
     };
 
-    async experienceOn(skuNumber, fatherContainer = { desk, tablet, mobile }) {
+async experienceOn(skuNumber, fatherContainer = {}) {
+    const sizeDevice = verifyDevice.verifyDevice();
 
-        const sizeDevice = verifyDevice.verifyDevice();
-        /** Verify father Container */
-        this.fatherContainer = fatherContainer
+    /** Verify father Container */
+    this.fatherContainer = fatherContainer;
 
-        try {
-            await this.conectServer(`${skuNumber}_CEL`);
-            this.createStyles();
-            const btn3D = new BTN3D(skuNumber, this.colorClient).create(
-                { data: this.dataServer }
-            );
-            fatherContainer[sizeDevice].appendChild(btn3D)
+    try {
+        await this.conectServer(skuNumber);
 
-        } catch (error) {
-            console.error(`Mudi Error:\n${error}`);
+        if (!this.dataServer || this.dataServer.length === 0) { 
+            console.warn(`El SKU: ${skuNumber} no está en MudiView`); 
+            return; 
         }
+
+        this.createStyles();
+        const btn3D = new BTN3D(skuNumber, this.colorClient).create({ data: this.dataServer });
+
+        if (fatherContainer[sizeDevice]) {
+            fatherContainer[sizeDevice].appendChild(btn3D);
+        } else {
+            console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
+        }
+
+    } catch (error) {
+        console.error(`Mudi Error:\n${error}`);
+    }
+
 
     };
 
