@@ -373,19 +373,21 @@ class MudiExperiencePDP {
 async experienceOn(skuNumber, fatherContainer = {}) {
     const sizeDevice = verifyDevice.verifyDevice();
 
+    const cleanSku = String(skuNumber).trim().replace(/\s+/g, '');
+
     /** Verify father Container */
     this.fatherContainer = fatherContainer;
 
     try {
-        await this.conectServer(skuNumber);
+        await this.conectServer(`${cleanSku}_CEL`);
 
         if (!this.dataServer || this.dataServer.length === 0) { 
-            console.warn(`El SKU: ${skuNumber} no está en MudiView`); 
+            console.warn(`El SKU: ${cleanSku} no está en MudiView`); 
             return; 
         }
 
         this.createStyles();
-        const btn3D = new BTN3D(skuNumber, this.colorClient).create({ data: this.dataServer });
+        const btn3D = new BTN3D(cleanSku, this.colorClient).create({ data: this.dataServer });
 
         if (fatherContainer[sizeDevice]) {
             fatherContainer[sizeDevice].appendChild(btn3D);
@@ -396,9 +398,8 @@ async experienceOn(skuNumber, fatherContainer = {}) {
     } catch (error) {
         console.error(`Mudi Error:\n${error}`);
     }
+}
 
-
-    };
 
 };
 
