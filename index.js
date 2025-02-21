@@ -346,6 +346,7 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
+                setTimeout(()=>document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove(),500)
                 return
             };
 
