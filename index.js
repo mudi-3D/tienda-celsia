@@ -348,8 +348,7 @@ class MudiExperiencePDP {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
                 setTimeout(() => {
                     document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
-                    window.removeEventListener("popstate", this.createObserver);
-                    window.addEventListener("popstate", this.createObserver);
+                    this.createObserver();
                 }, 500);
                 return
             };
@@ -388,8 +387,7 @@ class MudiExperiencePDP {
 
             if (!this.dataServer || this.dataServer.length === 0) {
                 console.warn(`El SKU: ${cleanSku} no está en MudiView`);
-                window.removeEventListener("popstate", this.createObserver);
-                window.addEventListener("popstate", this.createObserver)
+                this.createObserver();
                 return;
             }
 
@@ -398,8 +396,7 @@ class MudiExperiencePDP {
 
             if (fatherContainer[sizeDevice]) {
                 fatherContainer[sizeDevice].appendChild(btn3D);
-                window.removeEventListener("popstate", this.createObserver);
-                window.addEventListener("popstate", this.createObserver)
+                this.createObserver();
             } else {
                 console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
             };
@@ -436,3 +433,4 @@ class MudiExperiencePDP {
 
 const mudiExperience = new MudiExperiencePDP();
 window.mudiExperience = mudiExperience;
+
