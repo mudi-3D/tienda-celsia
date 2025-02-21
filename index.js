@@ -346,7 +346,10 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
-                document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove()
+                setTimeout ( ()=>
+                    document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove(),
+                    500
+                )
                 return
             };
 
@@ -400,7 +403,7 @@ class MudiExperiencePDP {
             const config = { childList: true, subtree: true, characterData: true };
             const myObserver = new MutationObserver(mutations => {
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     mudiExperience.experienceOn(
                         document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML,
                         {
@@ -409,7 +412,7 @@ class MudiExperiencePDP {
                             mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
                         }
                     )
-                },1000)
+                }, 1000)
 
             })
 
