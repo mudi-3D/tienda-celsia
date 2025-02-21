@@ -206,7 +206,6 @@ class BTN3D {
     /** Creates */
     create({ data }) {
 
-
         document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
 
         /** Create Fragment */
@@ -346,8 +345,6 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi - FROM CONECT SERVER - `);
-                document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
-                this.createObserver();
                 return
             };
 
@@ -389,12 +386,12 @@ class MudiExperiencePDP {
                 return;
             }
 
+            this.createObserver();
             this.createStyles();
             const btn3D = new BTN3D(cleanSku, this.colorClient).create({ data: this.dataServer });
 
             if (fatherContainer[sizeDevice]) {
                 fatherContainer[sizeDevice].appendChild(btn3D);
-                this.createObserver();
             } else {
                 console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
             };
@@ -406,25 +403,26 @@ class MudiExperiencePDP {
 
     createObserver() {
 
-        console.log('creando el observer de Mudi')
-
-        setTimeout(() => {
-            let textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
-            let config = { childList: true, subtree: true, characterData: true };
-            let myObserver = new MutationObserver(mutations => {
-
-                mudiExperience.experienceOn(
-                    document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML, {
+        const callbackInitExperience = () => {
+            console.log('iniciando re proceso verificacion mudi ...')
+            document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
+            mudiExperience.experienceOn(
+                document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML, 
+                {
                     desk: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
                     tablet: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
                     mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
-                }
-                );
+                }   
+            );
+        };
 
-            })
-            myObserver.observe(textSku, config);
-        }, 1500)
-
+        let textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
+        console.log(textSku.innerHTML)
+        let config = { childList: true, subtree: true, characterData: true };
+        let myObserver = new MutationObserver(mutations => {
+            setTimeout( callbackInitExperience , 2500)
+        });
+        myObserver.observe(textSku, config);
 
     };
 
