@@ -409,9 +409,9 @@ class MudiExperiencePDP {
         console.log('creando el observer de Mudi')
 
         setTimeout(() => {
-            const textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
-            const config = { childList: true, subtree: true, characterData: true };
-            const myObserver = new MutationObserver(mutations => {
+            let textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
+            let config = { childList: true, subtree: true, characterData: true };
+            let myObserver = new MutationObserver(mutations => {
 
                 mudiExperience.experienceOn(
                     document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML, {
@@ -433,3 +433,4 @@ class MudiExperiencePDP {
 
 const mudiExperience = new MudiExperiencePDP();
 window.mudiExperience = mudiExperience;
+
