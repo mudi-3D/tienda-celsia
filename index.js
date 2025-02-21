@@ -346,10 +346,11 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
-                setTimeout ( ()=>
-                    document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove(),
-                    500
-                )
+                setTimeout(() => {
+                    document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
+                    window.removeEventListener("popstate", this.createObserver);
+                    window.addEventListener("popstate", this.createObserver);
+                }, 500);
                 return
             };
 
@@ -387,6 +388,8 @@ class MudiExperiencePDP {
 
             if (!this.dataServer || this.dataServer.length === 0) {
                 console.warn(`El SKU: ${cleanSku} no está en MudiView`);
+                window.removeEventListener("popstate", this.createObserver);
+                window.addEventListener("popstate", this.createObserver)
                 return;
             }
 
@@ -395,33 +398,38 @@ class MudiExperiencePDP {
 
             if (fatherContainer[sizeDevice]) {
                 fatherContainer[sizeDevice].appendChild(btn3D);
+                window.removeEventListener("popstate", this.createObserver);
+                window.addEventListener("popstate", this.createObserver)
             } else {
                 console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
             };
-
-            const textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
-            const config = { childList: true, subtree: true, characterData: true };
-            const myObserver = new MutationObserver(mutations => {
-
-                setTimeout(() => {
-                    mudiExperience.experienceOn(
-                        document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML,
-                        {
-                            desk: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
-                            tablet: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
-                            mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
-                        }
-                    )
-                }, 1000)
-
-            })
-
-            myObserver.observe(textSku, config)
 
         } catch (error) {
             console.error(`Mudi Error:\n${error}`);
         }
     }
+
+    createObserver() {
+
+        setTimeout(() => {
+            const textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
+            const config = { childList: true, subtree: true, characterData: true };
+            const myObserver = new MutationObserver(mutations => {
+
+                mudiExperience.experienceOn(
+                    document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML, {
+                    desk: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
+                    tablet: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
+                    mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
+                }
+                );
+
+            })
+            myObserver.observe(textSku, config);
+        }, 1500)
+
+
+    };
 
 
 };
