@@ -345,6 +345,7 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi - FROM CONECT SERVER - `);
+                this.dataServer=null;
                 return
             };
 
@@ -407,12 +408,12 @@ class MudiExperiencePDP {
             console.log('iniciando re proceso verificacion mudi ...')
             document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
             mudiExperience.experienceOn(
-                document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML, 
+                document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML,
                 {
                     desk: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
                     tablet: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
                     mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
-                }   
+                }
             );
         };
 
@@ -420,7 +421,7 @@ class MudiExperiencePDP {
         console.log(textSku.innerHTML)
         let config = { childList: true, subtree: true, characterData: true };
         let myObserver = new MutationObserver(mutations => {
-            setTimeout( callbackInitExperience , 2500)
+            setTimeout(callbackInitExperience, 2500)
         });
         myObserver.observe(textSku, config);
 
@@ -431,4 +432,3 @@ class MudiExperiencePDP {
 
 const mudiExperience = new MudiExperiencePDP();
 window.mudiExperience = mudiExperience;
-
