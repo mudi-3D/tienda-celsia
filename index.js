@@ -346,7 +346,7 @@ class MudiExperiencePDP {
 
             if (response.data.length == 0) {
                 console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
-                setTimeout(()=>document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove(),500)
+                document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove()
                 return
             };
 
@@ -371,35 +371,54 @@ class MudiExperiencePDP {
         document.head.appendChild(link);
     };
 
-async experienceOn(skuNumber, fatherContainer = {}) {
-    const sizeDevice = verifyDevice.verifyDevice();
+    async experienceOn(skuNumber, fatherContainer = {}) {
+        const sizeDevice = verifyDevice.verifyDevice();
 
-    const cleanSku = String(skuNumber).trim().replace(/\s+/g, '');
+        const cleanSku = String(skuNumber).trim().replace(/\s+/g, '');
 
-    /** Verify father Container */
-    this.fatherContainer = fatherContainer;
+        /** Verify father Container */
+        this.fatherContainer = fatherContainer;
 
-    try {
-        await this.conectServer(`${cleanSku}_CEL`);
+        try {
+            await this.conectServer(`${cleanSku}_CEL`);
 
-        if (!this.dataServer || this.dataServer.length === 0) { 
-            console.warn(`El SKU: ${cleanSku} no está en MudiView`); 
-            return; 
+            if (!this.dataServer || this.dataServer.length === 0) {
+                console.warn(`El SKU: ${cleanSku} no está en MudiView`);
+                return;
+            }
+
+            this.createStyles();
+            const btn3D = new BTN3D(cleanSku, this.colorClient).create({ data: this.dataServer });
+
+            if (fatherContainer[sizeDevice]) {
+                fatherContainer[sizeDevice].appendChild(btn3D);
+            } else {
+                console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
+            };
+
+            const textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
+            const config = { childList: true, subtree: true, characterData: true };
+            const myObserver = new MutationObserver(mutations => {
+
+                setTimeout(()=>{
+                    mudiExperience.experienceOn(
+                        document.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML,
+                        {
+                            desk: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
+                            tablet: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor'),
+                            mobile: document.body.querySelector('.vtex-store-components-3-x-carouselGaleryCursor')
+                        }
+                    )
+                },1000)
+
+            })
+
+            myObserver.observe(textSku, config)
+
+        } catch (error) {
+            console.error(`Mudi Error:\n${error}`);
         }
-
-        this.createStyles();
-        const btn3D = new BTN3D(cleanSku, this.colorClient).create({ data: this.dataServer });
-
-        if (fatherContainer[sizeDevice]) {
-            fatherContainer[sizeDevice].appendChild(btn3D);
-        } else {
-            console.warn(`No se encontró un contenedor padre para el dispositivo: ${sizeDevice}`);
-        }
-
-    } catch (error) {
-        console.error(`Mudi Error:\n${error}`);
     }
-}
 
 
 };
