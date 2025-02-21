@@ -345,11 +345,9 @@ class MudiExperiencePDP {
             const response = await request.json();
 
             if (response.data.length == 0) {
-                console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi`);
-                setTimeout(() => {
-                    document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
-                    this.createObserver();
-                }, 500);
+                console.warn(`El sku ${this.skuNumber} no existe en la base de datos de Mudi - FROM CONECT SERVER - `);
+                document.querySelector('.btnsMudiContainer') && document.querySelector('.btnsMudiContainer').remove();
+                this.createObserver();
                 return
             };
 
@@ -386,7 +384,7 @@ class MudiExperiencePDP {
             await this.conectServer(`${cleanSku}_CEL`);
 
             if (!this.dataServer || this.dataServer.length === 0) {
-                console.warn(`El SKU: ${cleanSku} no está en MudiView`);
+                console.warn(`El SKU: ${cleanSku} no está en MudiView - FROM EXPERIENCEON -`);
                 this.createObserver();
                 return;
             }
@@ -407,6 +405,8 @@ class MudiExperiencePDP {
     }
 
     createObserver() {
+
+        console.log('creando el observer de Mudi')
 
         setTimeout(() => {
             const textSku = document.querySelector('.vtex-product-identifier-0-x-product-identifier__value')
@@ -433,4 +433,3 @@ class MudiExperiencePDP {
 
 const mudiExperience = new MudiExperiencePDP();
 window.mudiExperience = mudiExperience;
-
